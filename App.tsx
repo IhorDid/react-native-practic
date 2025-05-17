@@ -34,8 +34,8 @@ export default function App() {
           style={styles.image}
         >
           <View style={styles.whiteBox}>
-            <Text style={styles.text}>Реєстрація</Text>
             <View style={styles.form}>
+              <Text style={styles.text}>Реєстрація</Text>
               <TextInput
                 value={name}
                 onChangeText={setName}
@@ -61,6 +61,7 @@ export default function App() {
               <TouchableOpacity style={styles.button} onPress={onLogin}>
                 <Text style={styles.btn}>Зареєстуватися</Text>
               </TouchableOpacity>
+              <Text style={styles.textLogin}>Вже є акаунт? Увійти</Text>
             </View>
           </View>
         </ImageBackground>
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
-    marginBottom: 33,
+    marginBottom: 25,
     color: "#212121",
     textAlign: "center",
     fontWeight: 500,
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
   button: {
     width: 343,
     height: 44,
-    marginTop: 43,
+    marginTop: 30,
     backgroundColor: "#FF6C00",
     borderRadius: 100,
     justifyContent: "center",
@@ -122,5 +123,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     marginTop: "auto",
+    paddingTop: 70,
+    paddingBottom: 20,
+  },
+  textLogin: {
+    color: "#1B4371",
+    fontWeight: 400,
+    marginTop: 10,
   },
 });
