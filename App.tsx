@@ -21,19 +21,36 @@ export default function App() {
   const [email, setEmail] = useState("");
 
   const onLogin = () => {
-    Alert.alert("Credentials", `${name} + ${password} ${email}`);
+    Alert.alert("Credentials", `${name} + ${password} ${email}`, [
+      {
+        text: "OK",
+        onPress: () => {},
+        style: "cancel",
+      },
+    ]);
   };
 
   const animateValue = new Animated.Value(100);
   const color = animateValue.interpolate({
     inputRange: [0, 100],
-    outputRange: ["#FF6C00", "#FF6fff"],
+    outputRange: ["#FF8226", "#FF6C00"],
   });
-  Animated.timing(animateValue, {
-    toValue: 0,
-    duration: 5000,
-    useNativeDriver: true,
-  }).start();
+
+  const fadeIn = () => {
+    Animated.timing(animateValue, {
+      toValue: 0,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+  const fadeOut = () => {
+    Animated.timing(animateValue, {
+      toValue: 100,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -56,7 +73,7 @@ export default function App() {
                 placeholderTextColor="#333"
               />
               <TextInput
-                value={name}
+                value={email}
                 onChangeText={setEmail}
                 placeholder="Адреса електронної пошти"
                 style={styles.input}
@@ -76,6 +93,8 @@ export default function App() {
                   backgroundColor: color,
                 }}
                 onPress={onLogin}
+                onPressIn={fadeIn}
+                onPressOut={fadeOut}
               >
                 <Text style={styles.btn}>Зареєстуватися</Text>
               </AnimatedTouchable>
