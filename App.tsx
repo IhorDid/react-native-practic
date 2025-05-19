@@ -1,3 +1,4 @@
+import { transform } from "@babel/core";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -11,17 +12,28 @@ import {
   ImageBackground,
   TouchableOpacity,
   Text,
+  Animated,
 } from "react-native";
-
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 export default function App() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [email, seEmail] = useState("");
+  const [email, setEmail] = useState("");
 
   const onLogin = () => {
-    Alert.alert("Credentials", `${name} + ${password}`);
+    Alert.alert("Credentials", `${name} + ${password} ${email}`);
   };
 
+  const animateValue = new Animated.Value(100);
+  const color = animateValue.interpolate({
+    inputRange: [0, 100],
+    outputRange: ["#FF6C00", "#FF6fff"],
+  });
+  Animated.timing(animateValue, {
+    toValue: 0,
+    duration: 5000,
+    useNativeDriver: true,
+  }).start();
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -45,7 +57,7 @@ export default function App() {
               />
               <TextInput
                 value={name}
-                onChangeText={seEmail}
+                onChangeText={setEmail}
                 placeholder="Адреса електронної пошти"
                 style={styles.input}
                 placeholderTextColor="#333"
@@ -58,9 +70,15 @@ export default function App() {
                 style={styles.input}
                 placeholderTextColor="#333"
               />
-              <TouchableOpacity style={styles.button} onPress={onLogin}>
+              <AnimatedTouchable
+                style={{
+                  ...styles.button,
+                  backgroundColor: color,
+                }}
+                onPress={onLogin}
+              >
                 <Text style={styles.btn}>Зареєстуватися</Text>
-              </TouchableOpacity>
+              </AnimatedTouchable>
               <Text style={styles.textLogin}>Вже є акаунт? Увійти</Text>
             </View>
           </View>
@@ -124,7 +142,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     marginTop: "auto",
     paddingTop: 70,
-    paddingBottom: 20,
+    paddingBottom: 50,
   },
   textLogin: {
     color: "#1B4371",
