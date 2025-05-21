@@ -19,7 +19,7 @@ export default function App() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-
+  const [isVisible, setIsVisible] = useState(true);
   const onLogin = () => {
     Alert.alert("Credentials", `${name} + ${password} ${email}`, [
       {
@@ -50,6 +50,7 @@ export default function App() {
       useNativeDriver: true,
     }).start();
   };
+  const isDisableLogin = Boolean(!name || !password || !email);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -79,22 +80,34 @@ export default function App() {
                 style={styles.input}
                 placeholderTextColor="#333"
               />
-              <TextInput
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Пароль"
-                secureTextEntry
-                style={styles.input}
-                placeholderTextColor="#333"
-              />
+              <View>
+                <TextInput
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="Пароль"
+                  secureTextEntry={isVisible}
+                  style={styles.input}
+                  placeholderTextColor="#333"
+                />
+                <TouchableOpacity
+                  style={styles.clickVisible}
+                  onPress={() => setIsVisible(!isVisible)}
+                >
+                  <Text style={styles.loginVisible}>
+                    {isVisible ? "Показати" : "Приховати"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
               <AnimatedTouchable
                 style={{
                   ...styles.button,
                   backgroundColor: color,
+                  opacity: isDisableLogin ? 0.5 : 1,
                 }}
                 onPress={onLogin}
                 onPressIn={fadeIn}
                 onPressOut={fadeOut}
+                disabled={isDisableLogin}
               >
                 <Text style={styles.btn}>Зареєстуватися</Text>
               </AnimatedTouchable>
@@ -110,6 +123,16 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  clickVisible: {
+    position: "absolute",
+    right: 10,
+    top: 10,
+  },
+  loginVisible: {
+    color: "#1B4371",
+    fontSize: 16,
+    fontWeight: 400,
   },
   text: {
     marginBottom: 25,
@@ -127,12 +150,12 @@ const styles = StyleSheet.create({
   form: {
     alignItems: "center",
     justifyContent: "center",
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 30,
+    paddingRight: 30,
   },
   input: {
     color: "#BDBDBD",
-    width: 343,
+    width: 300,
     height: 44,
     padding: 10,
     borderWidth: 1,
@@ -142,7 +165,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   button: {
-    width: 343,
+    width: 300,
     height: 44,
     marginTop: 30,
     backgroundColor: "#FF6C00",
@@ -161,6 +184,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     marginTop: "auto",
     paddingTop: 70,
+    paddingLeft: 30,
+    paddingRight: 30,
     paddingBottom: 50,
   },
   textLogin: {
